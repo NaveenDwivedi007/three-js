@@ -27,8 +27,8 @@ const camera = new THREE.PerspectiveCamera(
 // camera view controler take camera and render dom element
 const orbit = new OrbitControls(camera, renderer.domElement)
 
-const axesHelper = new THREE.AxesHelper(5)
-scene.add(axesHelper)
+// const axesHelper = new THREE.AxesHelper(5)
+// scene.add(axesHelper)
 // to set one axis at a time 
 // camera.position.z = 5
 
@@ -79,7 +79,10 @@ sphere.position.set(0, 5)
 
 var gui = new dat.GUI()
 const options = {
-  sphereColor: 'red'
+  sphereColor: 'red',
+  showWireFrame: false,
+  bounceSpeed: 0,
+  bounceHeigth: 0
 };
 
 // gui not working
@@ -87,13 +90,25 @@ const options = {
 // gui.addColor(options, 'sphereColor').listen().onChange(function (e) {
 //   console.log(e);
 // });
+gui.add(options, "showWireFrame").onChange((e) => {
+  sphere.material.wireframe = e
+})
+gui.add(options, 'bounceSpeed', 0, .1)
+gui.add(options, 'bounceHeigth', 0, 10, 0.2)
+
+
+
+// sphere bounce
+
+let step = 0
 
 // animation rotation 
 function animationBoxRotation(time) {
   box.rotation.x += 0.01
   box.rotation.y += 0.01
   // box.rotation.z += 0.01
-
+  step += options.bounceSpeed
+  sphere.position.y = (10 * Math.abs(Math.sin(step))) + options.bounceHeigth
   // box.position.x += 0.5
   // box.position.y += 0.5
 
