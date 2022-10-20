@@ -15,5 +15,9 @@ addColor not woring but other properties do
 2. directional light
 3. spot light 
 
+# Shadow
+shadow are not enable by default we have to enable it in renderer
+we have to manually config which element recivied and cast the shadow
+
 
 

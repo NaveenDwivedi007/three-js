@@ -18,6 +18,9 @@ const camera = new THREE.PerspectiveCamera(
   1000
 )
 
+// shadow enable
+renderer.shadowMap.enabled = true
+
 
 // light 
 // const ambientLight = new THREE.AmbientLight('blue')
@@ -27,10 +30,16 @@ const camera = new THREE.PerspectiveCamera(
 
 const directionalLight = new THREE.DirectionalLight('yellow', 0.8)
 scene.add(directionalLight)
-directionalLight.position.set(1, 1, 0)
-const directionalLight2 = new THREE.DirectionalLight('pink', 0.8)
-scene.add(directionalLight2)
-directionalLight2.position.set(-1, -1, 0)
+directionalLight.position.set(-30, 50, 0)
+directionalLight.castShadow = true
+// const directionalLight2 = new THREE.DirectionalLight('pink', 0.8)
+// scene.add(directionalLight2)
+// directionalLight2.position.set(-1, -1, 0)
+
+// directional light helper
+
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 7)
+scene.add(directionalLightHelper)
 
 
 
@@ -74,6 +83,7 @@ const planeMaterial = new THREE.MeshBasicMaterial({
 })
 const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 scene.add(plane)
+plane.receiveShadow = true
 // rotation with take radian 
 plane.rotation.x = angleToRadian(90)
 
@@ -94,6 +104,7 @@ const sphereMaterial = new THREE.MeshStandardMaterial({
 // })
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
 scene.add(sphere)
+sphere.castShadow = true
 sphere.position.set(0, 5)
 
 
@@ -101,7 +112,10 @@ const options = {
   sphereColor: 'red',
   showWireFrame: false,
   bounceSpeed: 0,
-  bounceOffSet: 4.2
+  bounceOffSet: 4.2,
+  x: 0,
+  y: 5,
+  z: 0
 };
 
 // gui not working
@@ -114,6 +128,16 @@ gui.add(options, "showWireFrame").onChange((e) => {
 })
 gui.add(options, 'bounceSpeed', 0, .1)
 gui.add(options, 'bounceOffSet', 0, 10, 0.2)
+gui.add(options, 'x', -10, 10).onChange((e) => {
+  sphere.position.x = e
+})
+gui.add(options, 'y', -10, 10).onChange((e) => {
+  sphere.position.y = e
+})
+gui.add(options, 'z', -10, 10).onChange((e) => {
+  sphere.position.z = e
+})
+
 
 
 
