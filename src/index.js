@@ -1,10 +1,10 @@
 import * as THREE from "three";
+import "../style.css"
 
 //  to control view with mouse 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
+import { angleToRadian } from "./helperFunctions/mathHelper";
 import * as dat from "dat.gui";
-
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -55,7 +55,7 @@ const planeMaterial = new THREE.MeshBasicMaterial({
 const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 scene.add(plane)
 // rotation with take radian 
-plane.rotation.x = -0.5 * Math.PI
+plane.rotation.x = angleToRadian(90)
 
 // grid helper will add grid to the scene 
 const gridHelper = new THREE.GridHelper(30)
@@ -77,14 +77,14 @@ scene.add(sphere)
 sphere.position.set(0, 5)
 
 
-const gui = new dat.GUI()
+var gui = new dat.GUI()
 const options = {
   sphereColor: 'red'
-}
+};
 
 // gui not working
 
-// gui.addColor(options, 'sphereColor').onChange(function (e) {
+// gui.addColor(options, 'sphereColor').listen().onChange(function (e) {
 //   console.log(e);
 // });
 
@@ -92,6 +92,11 @@ const options = {
 function animationBoxRotation(time) {
   box.rotation.x += 0.01
   box.rotation.y += 0.01
+  // box.rotation.z += 0.01
+
+  // box.position.x += 0.5
+  // box.position.y += 0.5
+
   renderer.render(scene, camera)
 
 }
