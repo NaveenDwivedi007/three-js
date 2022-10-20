@@ -9,14 +9,8 @@ import * as dat from "dat.gui";
 const width = window.innerWidth
 const height = window.innerHeight
 const renderer = new THREE.WebGL1Renderer()
-renderer.setSize(width, height,
-  0.1,
-  1000)
-
-document.body.appendChild(renderer.domElement)
-
+const gui = new dat.GUI()
 const scene = new THREE.Scene()
-
 const camera = new THREE.PerspectiveCamera(
   45,
   width / height,
@@ -24,11 +18,37 @@ const camera = new THREE.PerspectiveCamera(
   1000
 )
 
+
+// light 
+// const ambientLight = new THREE.AmbientLight('blue')
+// scene.add(ambientLight)
+
+// directional Ligth
+
+const directionalLight = new THREE.DirectionalLight('yellow', 0.8)
+scene.add(directionalLight)
+directionalLight.position.set(1, 1, 0)
+const directionalLight2 = new THREE.DirectionalLight('pink', 0.8)
+scene.add(directionalLight2)
+directionalLight2.position.set(-1, -1, 0)
+
+
+
+
+renderer.setSize(width, height,
+  0.1,
+  1000)
+
+document.body.appendChild(renderer.domElement)
+
+
+
+
 // camera view controler take camera and render dom element
 const orbit = new OrbitControls(camera, renderer.domElement)
 
-// const axesHelper = new THREE.AxesHelper(5)
-// scene.add(axesHelper)
+const axesHelper = new THREE.AxesHelper(5)
+scene.add(axesHelper)
 // to set one axis at a time 
 // camera.position.z = 5
 
@@ -64,25 +84,24 @@ scene.add(gridHelper)
 // sphere 
 const sphereGeometry = new THREE.SphereGeometry(4, 50, 50)
 // it req a ligth source to show the material
-// const sphereMaterial = new THREE.MeshStandardMaterial({
-//   color: '#ccc',
-//   wireframe: true,
-// })
-const sphereMaterial = new THREE.MeshBasicMaterial({
-  color: 'blue',
-  // wireframe: true,
+const sphereMaterial = new THREE.MeshStandardMaterial({
+  color: '#ccc',
+  wireframe: false,
 })
+// const sphereMaterial = new THREE.MeshBasicMaterial({
+//   color: 'blue',
+//   // wireframe: true,
+// })
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
 scene.add(sphere)
 sphere.position.set(0, 5)
 
 
-var gui = new dat.GUI()
 const options = {
   sphereColor: 'red',
   showWireFrame: false,
   bounceSpeed: 0,
-  bounceHeigth: 0
+  bounceOffSet: 4.2
 };
 
 // gui not working
@@ -94,7 +113,7 @@ gui.add(options, "showWireFrame").onChange((e) => {
   sphere.material.wireframe = e
 })
 gui.add(options, 'bounceSpeed', 0, .1)
-gui.add(options, 'bounceHeigth', 0, 10, 0.2)
+gui.add(options, 'bounceOffSet', 0, 10, 0.2)
 
 
 
@@ -108,7 +127,7 @@ function animationBoxRotation(time) {
   box.rotation.y += 0.01
   // box.rotation.z += 0.01
   step += options.bounceSpeed
-  sphere.position.y = (10 * Math.abs(Math.sin(step))) + options.bounceHeigth
+  sphere.position.y = (10 * Math.abs(Math.sin(step))) + options.bounceOffSet
   // box.position.x += 0.5
   // box.position.y += 0.5
 
