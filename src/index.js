@@ -21,6 +21,10 @@ const camera = new THREE.PerspectiveCamera(
 // shadow enable
 renderer.shadowMap.enabled = true
 
+// shadow camera has to work on it to display shadow properly
+// info: each type of camera has its own shadow camera 
+
+
 
 // light 
 // const ambientLight = new THREE.AmbientLight('blue')
@@ -28,7 +32,7 @@ renderer.shadowMap.enabled = true
 
 // directional Ligth
 
-const directionalLight = new THREE.DirectionalLight('yellow', 0.8)
+const directionalLight = new THREE.DirectionalLight('white', 0.8)
 scene.add(directionalLight)
 directionalLight.position.set(-30, 50, 0)
 directionalLight.castShadow = true
@@ -41,6 +45,14 @@ directionalLight.castShadow = true
 const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 7)
 scene.add(directionalLightHelper)
 
+// shadow camera helper
+
+const directionalLightShadowCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+scene.add(directionalLightShadowCameraHelper)
+
+// moving the shadow camare
+directionalLight.shadow.camera.bottom = -12
+directionalLight.shadow.camera.top = 12
 
 
 
@@ -75,9 +87,11 @@ const box = new THREE.Mesh(boxGeometry, boxMaterial)
 scene.add(box)
 box.position.set(-5, 3)
 
+// shadow will not work on basic material  
+
 // plane geometry 
 const planeGeometry = new THREE.PlaneGeometry(30, 30)
-const planeMaterial = new THREE.MeshBasicMaterial({
+const planeMaterial = new THREE.MeshStandardMaterial({
   color: '#fff',
   side: THREE.DoubleSide,
 })
